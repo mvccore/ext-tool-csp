@@ -1,0 +1,38 @@
+{
+	"name": "mvccore/ext-tool-csp",
+	"type": "library",
+	"description": "MvcCore - Extension - Tool - Csp - utility to easilly complete `Content-Security-Policy` HTTP header.",
+	"keywords": [
+		"mvc", 
+		"mvccore", 
+		"framework", 
+		"extension", 
+		"plugin", 
+		"plug-in", 
+		"ext", 
+		"tool", 
+		"csp",
+		"content-security-policy", 
+		"content", 
+		"security", 
+		"policy"
+	],
+	"license": ["BSD-3-Clause"],
+	"authors": [{
+		"name": "Tom Flidr",
+		"homepage": "https://github.com/tomFlidr"
+	}],
+	"require": {
+		"php": ">=5.4.0"
+	},
+	"require-dev": {
+		"php": ">=5.4.0",
+		"nette/tester": "<=2.0",
+		"tomflidr/tracy": "<=2.5.12"
+	},
+	"autoload": {
+		"classmap": ["src/"]
+	},
+	"minimum-stability": "dev",
+	"prefer-stable": true
+}

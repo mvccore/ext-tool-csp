@@ -1,0 +1,1 @@
+default-src 'none'; object-src 'none'; connect-src 'self'; font-src 'self'; frame-src 'self'; img-src 'self' data: https://maps.gstatic.com https://maps.googleapis.com; media-src 'self'; style-src 'self'; script-src https://maps.googleapis.com https://maps.google.com https://maps.gstatic.com 'nonce-NzY4Yzg0MWU2MjhkOTc1YjgwNDM0NDhlNjQ5Mjg5NTQ='
