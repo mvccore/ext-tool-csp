@@ -14,4 +14,12 @@ class Csp implements \MvcCore\Ext\Tools\Csps\IConstants {
 		\MvcCore\Ext\Tools\Csps\LocalMethods,
 		\MvcCore\Ext\Tools\Csps\PublicMethods,
 		\MvcCore\Ext\Tools\Csps\GroupMethods;
+	
+	/**
+	 * MvcCore Extension - Tool - Content Security Policy - version:
+	 * Comparison by PHP function version_compare();
+	 * @see http://php.net/manual/en/function.version-compare.php
+	 */
+	const VERSION = '5.0.0';
+
 }
