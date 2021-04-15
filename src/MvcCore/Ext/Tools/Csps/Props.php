@@ -22,6 +22,10 @@ trait Props {
 	 */
 	protected static $headerName		= 'Content-Security-Policy';
 
+	/**
+	 * Internal store with CSP directives and API flags.
+	 * @var array
+	 */
 	protected static $directives		= [
 		'child-src'						=> IConstants::FETCH_CHILD_SRC,
 		'connect-src'					=> IConstants::FETCH_CONNECT_SRC,

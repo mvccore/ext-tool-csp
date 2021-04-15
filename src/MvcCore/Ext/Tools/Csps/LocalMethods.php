@@ -42,13 +42,14 @@ trait LocalMethods {
 	 * @param  int    $sourceFlags
 	 * @param  string $value
 	 * @param  bool   $allow
+	 * @throws \Exception Headers has been sent already.
 	 * @return \MvcCore\Ext\Tools\Csp
 	 */
 	protected function setConfigCspDirective ($sourceFlags, $cspDirective, $allow) {
 		$this->checkSendHeaders();
 		$allow
-			? $this->setConfigAllow($sourceFlags, "'{$cspDirective}'")
-			: $this->setConfigDisallow($sourceFlags, "'{$cspDirective}'");
+			? $this->setConfigAllow($sourceFlags, $cspDirective)
+			: $this->setConfigDisallow($sourceFlags, $cspDirective);
 		return $this;
 	}
 
@@ -61,10 +62,12 @@ trait LocalMethods {
 	protected function setConfigAllow ($sourceFlags, $value) {
 		foreach (self::$directives as $directiveName => $sourceFlag) {
 			if (($sourceFlags & $sourceFlag) === 0) continue;
-			$directiveConfig = isset($this->config[$directiveName])
-				? $this->config[$directiveName]
-				: [];
-			if (!is_array($directiveConfig)) $directiveConfig = [];
+			if (isset($this->config[$directiveName])) {
+				$directiveConfig = $this->config[$directiveName];
+				if (!is_array($directiveConfig)) $directiveConfig = [];
+			} else {
+				$directiveConfig = [];
+			}
 			$directiveConfig[$value] = TRUE;
 			$this->config[$directiveName] = $directiveConfig;
 		}
@@ -92,6 +95,31 @@ trait LocalMethods {
 			}
 		}
 		return $this;
+	}
+
+	/**
+	 * Check if given single CSP flag or all CSP flags has allowed values in second argument.
+	 * @param  int    $sourceFlags
+	 * @param  string $value 
+	 * @return bool
+	 */
+	protected function isConfigAllowed ($sourceFlags, $value) {
+		$log2 = log($sourceFlags) / log(2);
+		$isSingleFlag = ($log2 - intval(round($log2))) === 0.0;
+		if ($isSingleFlag) {
+			return isset($this->config[$sourceFlags][$value]);
+		} else {
+			$allFlagsAllowed = TRUE;
+			foreach (self::$directives as $directiveName => $cspFlag) {
+				if (($sourceFlags & $cspFlag) != 0) {
+					if (!isset($this->config[$directiveName][$value])) {
+						$allFlagsAllowed = FALSE;
+						break;
+					}
+				}
+			}
+			return $allFlagsAllowed;
+		}
 	}
 
 	/**

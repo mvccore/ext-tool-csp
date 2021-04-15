@@ -108,7 +108,7 @@ class CspTest extends \Tester\TestCase {
 	}
 
 	public function testBaseConfiguration () {
-		$nonce = Csp::GetInstance()
+		Csp::GetInstance()
 			->Disallow(
 				Csp::FETCH_DEFAULT_SRC | 
 				Csp::FETCH_OBJECT_SRC
@@ -134,8 +134,10 @@ class CspTest extends \Tester\TestCase {
 				]
 			)
 			->AllowGoogleMaps()
-			->GetNonce();
+			->AllowNonce(Csp::FETCH_SCRIPT_SRC);
 		
+		$nonce = Csp::GetInstance()->GetNonce();
+
 		Assert::equal(
 			Csp::GetInstance()->GetHeader(),
 			"default-src 'none'; object-src 'none'; connect-src 'self' https://some.tracking-counter-1.com/; font-src 'self'; frame-src 'self'; img-src 'self' data: https://maps.gstatic.com https://maps.googleapis.com; media-src 'self'; script-src 'self' https://some.tracking-counter-1.com/ https://cdnjs.com/ https://code.jquery.com/ https://maps.googleapis.com https://maps.google.com https://maps.gstatic.com 'nonce-{$nonce}'; style-src 'self'"
@@ -144,6 +146,8 @@ class CspTest extends \Tester\TestCase {
 
 	public function testNonce () {
 		// allow something
+		Csp::GetInstance()->AllowNonce(Csp::FETCH_SCRIPT_SRC);
+
 		$n1 = Csp::GetInstance()->GetNonce();
 		$n2 = Csp::GetInstance()->GetNonce();
 

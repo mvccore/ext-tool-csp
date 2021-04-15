@@ -49,7 +49,10 @@ Csp::GetInstance()
 			'https://code.jquery.com/',
 		]
 	)
-	->AllowGoogleMaps()
-	->GetNonce();
+	->AllowNonce()
+	->AllowGoogleMaps();
+```
 
+```html
+<script nonce="<?=Csp::GetInstance()->GetNonce()?>"></script>
 ```
