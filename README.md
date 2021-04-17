@@ -49,7 +49,7 @@ Csp::GetInstance()
 			'https://code.jquery.com/',
 		]
 	)
-	->AllowNonce()
+	->AllowNonce(Csp::FETCH_SCRIPT_SRC)
 	->AllowGoogleMaps();
 ```
 
