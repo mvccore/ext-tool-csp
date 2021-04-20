@@ -54,7 +54,7 @@ Csp::GetInstance()
 			'data:',
 		]
 	)
-	->AllowNonce()
+	->AllowNonce(Csp::FETCH_SCRIPT_SRC)
 	->AllowGoogleMaps();
 ```
 
