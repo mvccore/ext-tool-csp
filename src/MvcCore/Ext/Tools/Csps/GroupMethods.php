@@ -14,7 +14,6 @@ trait GroupMethods {
 	 * @return \MvcCore\Ext\Tools\Csp
 	 */
 	public function AllowGoogleMaps () {
-		/** @var \MvcCore\Ext\Tools\Csp $this */
 		return $this
 			->AllowHosts(Csp::FETCH_SCRIPT_SRC, [
 				'https://maps.googleapis.com',
@@ -33,7 +32,6 @@ trait GroupMethods {
 	 * @return \MvcCore\Ext\Tools\Csp
 	 */
 	public function AllowGoogleFonts () {
-		/** @var \MvcCore\Ext\Tools\Csp $this */
 		return $this
 			->AllowHosts(Csp::FETCH_STYLE_SRC, [
 				'https://fonts.googleapis.com'
@@ -48,7 +46,6 @@ trait GroupMethods {
 	 * @return \MvcCore\Ext\Tools\Csp
 	 */
 	public function AllowGoogleAnalytics () {
-		/** @var \MvcCore\Ext\Tools\Csp $this */
 		return $this
 			->AllowSelf(Csp::FETCH_SCRIPT_SRC)
 			->AllowHosts(Csp::FETCH_IMG_SRC | Csp::FETCH_CONNECT_SRC | Csp::FETCH_SCRIPT_SRC, [

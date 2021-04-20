@@ -101,19 +101,22 @@ trait LocalMethods {
 	 * Check if given single CSP flag or all CSP flags has allowed values in second argument.
 	 * @param  int    $sourceFlags
 	 * @param  string $value 
+	 * @param  bool   $checkAllFlags
 	 * @return bool
 	 */
-	protected function isConfigAllowed ($sourceFlags, $value) {
+	protected function isConfigAllowed ($sourceFlags, $value, $checkAllFlags = TRUE) {
 		$log2 = log($sourceFlags) / log(2);
 		$isSingleFlag = ($log2 - intval(round($log2))) === 0.0;
 		if ($isSingleFlag) {
-			return isset($this->config[$sourceFlags][$value]);
+			$directiveName = array_search($sourceFlags, self::$directives, TRUE);
+			return isset($this->config[$directiveName][$value]);
 		} else {
-			$allFlagsAllowed = TRUE;
+			$allFlagsAllowed = $checkAllFlags;
 			foreach (self::$directives as $directiveName => $cspFlag) {
 				if (($sourceFlags & $cspFlag) != 0) {
-					if (!isset($this->config[$directiveName][$value])) {
-						$allFlagsAllowed = FALSE;
+					$allowed = isset($this->config[$directiveName][$value]);
+					if (($allFlagsAllowed && !$allowed) || (!$allFlagsAllowed && $allowed)) {
+						$allFlagsAllowed = !$allFlagsAllowed;
 						break;
 					}
 				}

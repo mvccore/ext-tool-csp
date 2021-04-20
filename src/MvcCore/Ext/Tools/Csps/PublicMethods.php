@@ -27,9 +27,9 @@ trait PublicMethods {
 	 */
 	public function ParsePhpHeader () {
 		$allResponseHeaders = headers_list();
-		$cspHeaderLength = strlen(self::$headerName);
+		$cspHeaderLength = strlen($this->headerName);
 		foreach ($allResponseHeaders as $responseHeader) {
-			$cspPos = mb_strpos($responseHeader, self::$headerName . ':');
+			$cspPos = mb_strpos($responseHeader, $this->headerName . ':');
 			if ($cspPos === FALSE) continue;
 			if ($this->lastCspHeader !== NULL && $this->lastCspHeader === $responseHeader) break;
 			$this->lastCspHeader = $responseHeader;
@@ -89,11 +89,14 @@ trait PublicMethods {
 	
 	/**
 	 * Check if there is/are allowed self resources by given CSP directive(s).
-	 * @param  int $sourceFlags CSP directive(s) to check if allowed self resources.
+	 * @param  int  $sourceFlags 
+	 * CSP directive(s) to check if allowed self resources.
+	 * @param  bool $checkAllFlags 
+	 * If `TRUE`, multiple flags are checked with `AND` operator, `OR` operator otherwise.
 	 * @return \MvcCore\Ext\Tools\Csp
 	 */
-	public function IsAllowedSelf ($sourceFlags) {
-		return $this->isConfigAllowed($sourceFlags, "'self'");
+	public function IsAllowedSelf ($sourceFlags, $checkAllFlags = TRUE) {
+		return $this->isConfigAllowed($sourceFlags, "'self'", $checkAllFlags);
 	}
 
 
@@ -139,14 +142,17 @@ trait PublicMethods {
 	
 	/**
 	 * Check if there is allowed host or url resource by given CSP directive(s).
-	 * @param  int    $sourceFlags CSP directive(s) to check if allowed host or url resources.
+	 * @param  int    $sourceFlags
+	 * CSP directive(s) to check if allowed host or url resources.
 	 * @param  string $hostOrUrl
 	 * Host, with optional scheme, port, and path. e.g. `example.com`, 
 	 * `*.example.com`, `https://*.example.com:12/path/to/file.js`.
+	 * @param  bool   $checkAllFlags 
+	 * If `TRUE`, multiple flags are checked with `AND` operator, `OR` operator otherwise.
 	 * @return \MvcCore\Ext\Tools\Csp
 	 */
-	public function IsAllowedHost ($sourceFlags, $hostOrUrl) {
-		return $this->isConfigAllowed($sourceFlags, $hostOrUrl);
+	public function IsAllowedHost ($sourceFlags, $hostOrUrl, $checkAllFlags = TRUE) {
+		return $this->isConfigAllowed($sourceFlags, $hostOrUrl, $checkAllFlags);
 	}
 
 
@@ -192,9 +198,11 @@ trait PublicMethods {
 	 * CSP directive(s) to check if allowed resources under scheme.
 	 * @param  string $scheme 
 	 * Scheme like `'http:'`, `'https:'` or `'data:'` ...
+	 * @param  bool   $checkAllFlags 
+	 * If `TRUE`, multiple flags are checked with `AND` operator, `OR` operator otherwise.
 	 * @return \MvcCore\Ext\Tools\Csp
 	 */
-	public function IsAllowedSheme ($sourceFlags, $scheme = 'https:') {
+	public function IsAllowedSheme ($sourceFlags, $scheme = 'https:', $checkAllFlags = TRUE) {
 		return $this->isConfigAllowed($sourceFlags, $this->checkScheme($scheme));
 	}
 
@@ -225,11 +233,14 @@ trait PublicMethods {
 	/**
 	 * Check if there is allowed inline resources like `<script></script>`, 
 	 * `<style></style>` or `javascript:` URLs.
-	 * @param  int $sourceFlags CSP directive(s) to check allowed inline resources.
+	 * @param  int   $sourceFlags 
+	 * CSP directive(s) to check allowed inline resources.
+	 * @param  bool  $checkAllFlags 
+	 * If `TRUE`, multiple flags are checked with `AND` operator, `OR` operator otherwise.
 	 * @return \MvcCore\Ext\Tools\Csp
 	 */
-	public function IsAllowedUnsafeInline ($sourceFlags) {
-		return $this->isConfigAllowed($sourceFlags, "'unsafe-inline'");
+	public function IsAllowedUnsafeInline ($sourceFlags, $checkAllFlags = TRUE) {
+		return $this->isConfigAllowed($sourceFlags, "'unsafe-inline'", $checkAllFlags);
 	}
 	
 
@@ -271,11 +282,14 @@ trait PublicMethods {
 	 * to allow inline event handlers and not inline `<script>` elements or 
 	 * `javascript:` URLs, this is a safer than using the `'unsafe-inline'`.
 	 * WARNING! This CSP is supported only from CSP Level 3!
-	 * @param  int $sourceFlags CSP directive(s) to check allowed unsave hashes resources.
+	 * @param  int  $sourceFlags 
+	 * CSP directive(s) to check allowed unsave hashes resources.
+	 * @param  bool $checkAllFlags 
+	 * If `TRUE`, multiple flags are checked with `AND` operator, `OR` operator otherwise.
 	 * @return \MvcCore\Ext\Tools\Csp
 	 */
-	public function IsAllowedUnsafeHashes ($sourceFlags) {
-		return $this->isConfigAllowed($sourceFlags, "'unsafe-hashes'");
+	public function IsAllowedUnsafeHashes ($sourceFlags, $checkAllFlags = TRUE) {
+		return $this->isConfigAllowed($sourceFlags, "'unsafe-hashes'", $checkAllFlags);
 	}
 
 
@@ -307,11 +321,14 @@ trait PublicMethods {
 	 * Check if there is allowed to use of dynamic code evaluation by 
 	 * `eval()`, `setImmediate()`, `new Function()`, `execScript()`, 
 	 * `setInterval()` and `setTimeout()`.
-	 * @param  int $sourceFlags CSP directive(s) to check allowed dynamic code evaluation.
+	 * @param  int  $sourceFlags 
+	 * CSP directive(s) to check allowed dynamic code evaluation.
+	 * @param  bool $checkAllFlags 
+	 * If `TRUE`, multiple flags are checked with `AND` operator, `OR` operator otherwise.
 	 * @return \MvcCore\Ext\Tools\Csp
 	 */
-	public function IsAllowedUnsafeEval ($sourceFlags) {
-		return $this->isConfigAllowed($sourceFlags, "'unsafe-eval'");
+	public function IsAllowedUnsafeEval ($sourceFlags, $checkAllFlags = TRUE) {
+		return $this->isConfigAllowed($sourceFlags, "'unsafe-eval'", $checkAllFlags);
 	}
 
 	
@@ -353,11 +370,14 @@ trait PublicMethods {
 	 * or source expressions such as 'self' or 'unsafe-inline'. So then, there 
 	 * is necessary to mark all other `<script>` tags with nonce or hashes.
 	 * WARNING! This CSP is supported only from CSP Level 3!
-	 * @param  int $sourceFlags CSP directive(s) to check allowed strict dynamic resources.
+	 * @param  int  $sourceFlags 
+	 * CSP directive(s) to check allowed strict dynamic resources.
+	 * @param  bool $checkAllFlags 
+	 * If `TRUE`, multiple flags are checked with `AND` operator, `OR` operator otherwise.
 	 * @return bool
 	 */
-	public function IsAllowedStrictDynamic ($sourceFlags) {
-		return $this->isConfigAllowed($sourceFlags, "'strict-dynamic'");
+	public function IsAllowedStrictDynamic ($sourceFlags, $checkAllFlags = TRUE) {
+		return $this->isConfigAllowed($sourceFlags, "'strict-dynamic'", $checkAllFlags);
 	}
 
 
@@ -385,11 +405,14 @@ trait PublicMethods {
 	/**
 	 * Check if there is allowed `<script>`, `<style>` or any 
 	 * other resources marked by nonce attribute.
-	 * @param  int $sourceFlags CSP directive(s) to check allowed resources with nonce attribute.
+	 * @param  int  $sourceFlags 
+	 * CSP directive(s) to check allowed resources with nonce attribute.
+	 * @param  bool $checkAllFlags 
+	 * If `TRUE`, multiple flags are checked with `AND` operator, `OR` operator otherwise.
 	 * @return bool
 	 */
-	public function IsAllowedNonce ($sourceFlags) {
-		return $this->isConfigAllowed($sourceFlags, "'nonce-{$this->GetNonce()}'");
+	public function IsAllowedNonce ($sourceFlags, $checkAllFlags = TRUE) {
+		return $this->isConfigAllowed($sourceFlags, "'nonce-{$this->GetNonce()}'", $checkAllFlags);
 	}
 
 
@@ -419,12 +442,15 @@ trait PublicMethods {
 	
 	/**
 	 * Check if there is allowed JS/CSS source code by hash (sha256 by default).
-	 * @param  int $sourceFlags CSP directive(s) to check allowed resources by hash.
+	 * @param  int  $sourceFlags
+	 * CSP directive(s) to check allowed resources by hash.
+	 * @param  bool $checkAllFlags 
+	 * If `TRUE`, multiple flags are checked with `AND` operator, `OR` operator otherwise.
 	 * @return bool
 	 */
-	public function IsAllowedHashedSource ($sourceFlags, $sourceCode, $hashAlgo = 'sha256') {
+	public function IsAllowedHashedSource ($sourceFlags, $sourceCode, $hashAlgo = 'sha256', $checkAllFlags = TRUE) {
 		$souceHash = base64_encode(hash($hashAlgo, $sourceCode, TRUE));
-		return $this->isConfigAllowed($sourceFlags, "'{$hashAlgo}-{$souceHash}'");
+		return $this->isConfigAllowed($sourceFlags, "'{$hashAlgo}-{$souceHash}'", $checkAllFlags);
 	}
 
 
@@ -435,7 +461,6 @@ trait PublicMethods {
 	 * @return \MvcCore\Ext\Tools\Csp
 	 */
 	public function Disallow ($sourceFlags)	{
-		/** @var \MvcCore\Ext\Tools\Csp $this */
 		$this->checkSendHeaders();
 		foreach (Csp::$directives as $directiveName => $sourceFlag) {
 			if (($sourceFlags & $sourceFlag) === 0) continue;
@@ -460,12 +485,28 @@ trait PublicMethods {
 	}
 
 	/**
-	 * Complete header from internal configuration and returns it.
-	 * @param  bool   $withHeaderName `FALSE` by default to return only header value.
+	 * Complete whole header line from internal configuration and returns it.
+	 * If there is not CSP configuration, return header name + colon + empty header value.
 	 * @return string
 	 */
-	public function GetHeader ($withHeaderName = FALSE) {
-		/** @var \MvcCore\Ext\Tools\Csp $this */
+	public function GetHeader () {
+		return $this->headerName . ': ' . $this->GetHeaderValue();
+	}
+	
+	/**
+	 * Get CSP header name only (without colon).
+	 * @return string
+	 */
+	public function GetHeaderName () {
+		return $this->headerName;
+	}
+
+	/**
+	 * Complete header value after colon from internal configuration and returns it.
+	 * If there is no CSP configuration, return an empty string.
+	 * @return string
+	 */
+	public function GetHeaderValue () {
 		$headerSections = [];
 		foreach ($this->config as $directiveName => $uniqueValues) {
 			if (is_array($uniqueValues)) {
@@ -474,13 +515,8 @@ trait PublicMethods {
 				$headerSections[] = $directiveName . " 'none'";
 			}
 		}
-		if (count($headerSections) > 0) {
-			if ($withHeaderName) {
-				return Csp::$headerName . ': ' . implode('; ', $headerSections);
-			} else {
-				return implode('; ', $headerSections);
-			}
-		}
+		if (count($headerSections) > 0) 
+			return implode('; ', $headerSections);
 		return '';
 	}
 }

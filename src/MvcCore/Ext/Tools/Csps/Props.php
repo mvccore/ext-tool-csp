@@ -17,12 +17,6 @@ trait Props {
 	protected static $instance			= NULL;
 
 	/**
-	 * HTTP header name.
-	 * @var string
-	 */
-	protected static $headerName		= 'Content-Security-Policy';
-
-	/**
 	 * Internal store with CSP directives and API flags.
 	 * @var array
 	 */
@@ -67,4 +61,10 @@ trait Props {
 	 * @var string|NULL
 	 */
 	protected $lastCspHeader			= NULL;
+	
+	/**
+	 * HTTP header name.
+	 * @var string
+	 */
+	protected $headerName				= 'Content-Security-Policy';
 }
