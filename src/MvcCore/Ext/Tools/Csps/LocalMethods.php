@@ -25,14 +25,17 @@ trait LocalMethods {
 	 */
 	protected static function createNonceHash () {
 		if (function_exists('openssl_random_pseudo_bytes')) {
-			$randomHash = bin2hex(openssl_random_pseudo_bytes(16));
+			$randomHash = bin2hex(openssl_random_pseudo_bytes(8));
 		} else if (PHP_VERSION_ID >= 70000) {
-			$randomHash = bin2hex(random_bytes(16));
+			$randomHash = bin2hex(random_bytes(8));
 		} else {
-			$randomHash = '';
-			for ($i = 0; $i < 16; $i++) 
+			$randomBytes = [];
+			for ($i = 0; $i < 16; $i++) {
 				/** @see https://github.com/php/php-src/blob/master/ext/standard/mt_rand.c */
-				$randomHash .= str_pad(dechex(rand(0,255)),2,'0',STR_PAD_LEFT);
+				$randomBytes[] = str_pad(dechex(mt_rand(0,255)),2,'0',STR_PAD_LEFT);
+			}
+			shuffle($randomBytes);
+			$randomHash = implode('', $randomBytes);
 		}
 		return base64_encode($randomHash);
 	}
