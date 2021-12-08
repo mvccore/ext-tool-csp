@@ -24,7 +24,7 @@ include_once('vendor/autoload.php');
 
 use \MvcCore\Ext\Tools\Csp;
 
-Csp::GetInstance()
+$csp = Csp::GetInstance()
 	->Disallow(
 		Csp::FETCH_DEFAULT_SRC | 
 		Csp::FETCH_OBJECT_SRC
@@ -56,8 +56,23 @@ Csp::GetInstance()
 	)
 	->AllowNonce(Csp::FETCH_SCRIPT_SRC)
 	->AllowGoogleMaps();
-```
-
-```html
-<script nonce="<?=Csp::GetInstance()->GetNonce()?>"></script>
+	
+header($csp->GetHeader());
+	
+?><!DOCTYPE HTML>
+<html lang="en-US">
+	<head>
+		<meta charset="UTF-8">
+		<title>CSP</title>
+	</head>
+	<body>
+		<script nonce="<?=$csp->GetNonce()?>" type="text/javascript">
+			document.write("Safe working javascript code.");
+		</script>
+		<hr />
+		<script type="text/javascript">
+			document.write("Dangerous not working javascript code.");
+		</script>
+	</body>
+</html>
 ```

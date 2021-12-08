@@ -47,7 +47,7 @@ class CspTest extends \Tester\TestCase {
 		);
 		
 		Assert::equal(
-			Csp::GetInstance()->GetHeader(),
+			Csp::GetInstance()->GetHeaderValue(),
 			"default-src 'self' http://example.com; connect-src *.google.com; frame-src *.google.com; media-src *.google.com"
 		);
 	}
@@ -65,7 +65,7 @@ class CspTest extends \Tester\TestCase {
 		);
 
 		Assert::equal(
-			Csp::GetInstance()->GetHeader(),
+			Csp::GetInstance()->GetHeaderValue(),
 			"media-src *.google.com *.youtube.com 'self'; connect-src 'self'"
 		);
 	}
@@ -83,7 +83,7 @@ class CspTest extends \Tester\TestCase {
 		);
 
 		Assert::equal(
-			Csp::GetInstance()->GetHeader(),
+			Csp::GetInstance()->GetHeaderValue(),
 			"font-src https://google.com; img-src 'none'"
 		);
 	}
@@ -102,7 +102,7 @@ class CspTest extends \Tester\TestCase {
 		);
 
 		Assert::equal(
-			Csp::GetInstance()->GetHeader(),
+			Csp::GetInstance()->GetHeaderValue(),
 			"font-src https://google.com"
 		);
 	}
@@ -139,7 +139,7 @@ class CspTest extends \Tester\TestCase {
 		$nonce = Csp::GetInstance()->GetNonce();
 
 		Assert::equal(
-			Csp::GetInstance()->GetHeader(),
+			Csp::GetInstance()->GetHeaderValue(),
 			"default-src 'none'; object-src 'none'; connect-src 'self' https://some.tracking-counter-1.com/; font-src 'self'; frame-src 'self'; img-src 'self' data: https://maps.gstatic.com https://maps.googleapis.com; media-src 'self'; script-src 'self' https://some.tracking-counter-1.com/ https://cdnjs.com/ https://code.jquery.com/ https://maps.googleapis.com https://maps.google.com https://maps.gstatic.com 'nonce-{$nonce}'; style-src 'self'"
 		);
 	}
@@ -151,7 +151,7 @@ class CspTest extends \Tester\TestCase {
 		$n1 = Csp::GetInstance()->GetNonce();
 		$n2 = Csp::GetInstance()->GetNonce();
 
-		Assert::true(!!preg_match("#^([a-zA-Z0-9=/\+]{44})$#", $n1));
+		Assert::true(!!preg_match("#^([a-zA-Z0-9\=/\+]{24})$#", $n1));
 
 		Assert::true($n1 !== NULL);
 		Assert::true($n2 !== NULL);
