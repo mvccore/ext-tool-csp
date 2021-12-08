@@ -53,6 +53,8 @@ Temporary Items
 
 *.phpproj
 *.phpproj.user
+composer.lock
 composer.dev.json
+composer.dev.lock
 
 vendor/
