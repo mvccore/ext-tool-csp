@@ -1,9 +1,8 @@
 <?php
 
-namespace MvcCore\Ext\Tools\Csps;
+namespace MvcCore\Ext\Tools\Csp;
 
-use \MvcCore\Ext\Tools\Csp;
-use \MvcCore\Ext\Tools\Csps\IConstants;
+use \MvcCore\Ext\Tools\Csp\IConstants;
 
 /**
  * @mixin \MvcCore\Ext\Tools\Csp

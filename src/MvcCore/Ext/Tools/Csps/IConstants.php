@@ -1,6 +1,6 @@
 <?php
 
-namespace MvcCore\Ext\Tools\Csps;
+namespace MvcCore\Ext\Tools\Csp;
 
 interface IConstants {
 
@@ -64,14 +64,47 @@ interface IConstants {
 	const FETCH_OBJECT_SRC					= 256;
 
 	/**
-	 * Specifies valid sources for JavaScript.
+	 * The `script-src` directive specifies valid sources for 
+	 * JavaScript. This includes not only URLs loaded directly 
+	 * into `<script>` elements, but also things like inline script 
+	 * event handlers (`onclick`) and XSLT stylesheets which can 
+	 * trigger script execution.
 	 */
 	const FETCH_SCRIPT_SRC					= 512;
 
 	/**
-	 * Specifies valid sources for stylesheets.
+	 * The `script-src-attr` directive specifies valid sources 
+	 * for JavaScript inline event handlers. This includes 
+	 * only inline script event handlers like `onclick`, but not 
+	 * URLs loaded directly into `<script>` elements.
 	 */
-	const FETCH_STYLE_SRC					= 1024;
+	const FETCH_SCRIPT_SRC_ATTR				= 1024;
+
+	/**
+	 * The `script-src-elem` directive specifies valid sources 
+	 * for JavaScript `<script>` elements, but not inline script 
+	 * event handlers like `onclick`.
+	 */
+	const FETCH_SCRIPT_SRC_ELEM				= 2048;
+
+	/**
+	 * The `style-src` directive specifies valid 
+	 * sources for stylesheets.
+	 */
+	const FETCH_STYLE_SRC					= 4096;
+
+	/**
+	 * The `style-src-attr` directive specifies valid sources 
+	 * for inline styles applied to individual DOM elements.
+	 */
+	const FETCH_STYLE_SRC_ATTR				= 8192;
+
+	/**
+	 * The `style-src-elem` directive specifies valid sources 
+	 * for stylesheets `<style>` elements and `<link>` elements 
+	 * with `rel="stylesheet"`.
+	 */
+	const FETCH_STYLE_SRC_ELEM				= 16384;
 
 	//endregion
 
@@ -81,19 +114,19 @@ interface IConstants {
 	 * Restricts the URLs which can be used in
 	 * a document's <base> element.
 	 */
-	const DOCUMENT_BASE_URI					= 2048;
+	const DOCUMENT_BASE_URI					= 32768;
 
 	/**
 	 * Restricts the set of plugins that can be embedded into
 	 * a document by limiting the types of resources which can be loaded.
 	 */
-	const DOCUMENT_PLUGIN_TYPES				= 4096;
+	const DOCUMENT_PLUGIN_TYPES				= 65536;
 
 	/**
 	 * Enables a sandbox for the requested resource
 	 * similar to the <iframe> sandbox attribute.
 	 */
-	const DOCUMENT_IFRAME_SANDBOX			= 8192;
+	const DOCUMENT_IFRAME_SANDBOX			= 131072;
 
 	//endregion
 
@@ -103,13 +136,13 @@ interface IConstants {
 	 * Restricts the URLs which can be used as the target of
 	 * a form submissions from a given context.
 	 */
-	const NAVIGATION_FORM_ACTION			= 16384;
+	const NAVIGATION_FORM_ACTION			= 262144;
 
 	/**
 	 * Specifies valid parents that may embed a page
 	 * using <frame>, <iframe>, <object>, <embed>, or <applet>.
 	 */
-	const NAVIGATION_FRAME_ANCESTORS		= 32768;
+	const NAVIGATION_FRAME_ANCESTORS		= 524288;
 
 	/**
 	 * Restricts the URLs that the document may navigate to by any means.
@@ -117,7 +150,7 @@ interface IConstants {
 	 * `window.location` is invoked. If form-action is present then
 	 * this directive is ignored for form submissions.
 	 */
-	const NAVIGATION_TO						= 65536;
+	const NAVIGATION_TO						= 1048576;
 
 	//endregion
 
@@ -127,13 +160,13 @@ interface IConstants {
 	 * Restricts the URLs which can be used as the target of
 	 * a form submissions from a given context.
 	 */
-	const OTHER_BLOCK_ALL_MIXED_CONTENT		= 131072;
+	const OTHER_BLOCK_ALL_MIXED_CONTENT		= 1048576;
 
 	/**
 	 * Specifies valid parents that may embed a page
 	 * using <frame>, <iframe>, <object>, <embed>, or <applet>.
 	 */
-	const OTHER_UPGRADE_INSECURE_REQUESTS	= 262144;
+	const OTHER_UPGRADE_INSECURE_REQUESTS	= 4194304;
 
 	//endregion
 }

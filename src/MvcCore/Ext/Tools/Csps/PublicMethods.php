@@ -1,6 +1,6 @@
 <?php
 
-namespace MvcCore\Ext\Tools\Csps;
+namespace MvcCore\Ext\Tools\Csp;
 
 use \MvcCore\Ext\Tools\Csp;
 
