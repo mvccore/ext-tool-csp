@@ -8,18 +8,18 @@ namespace MvcCore\Ext\Tools;
  * @see https://www.w3.org/TR/CSP3/
  * @see https://content-security-policy.com/
  */
-class Csp implements \MvcCore\Ext\Tools\Csps\IConstants {
+class Csp implements \MvcCore\Ext\Tools\Csp\IConstants {
 
-	use \MvcCore\Ext\Tools\Csps\Props,
-		\MvcCore\Ext\Tools\Csps\LocalMethods,
-		\MvcCore\Ext\Tools\Csps\PublicMethods,
-		\MvcCore\Ext\Tools\Csps\GroupMethods;
+	use \MvcCore\Ext\Tools\Csp\Props,
+		\MvcCore\Ext\Tools\Csp\LocalMethods,
+		\MvcCore\Ext\Tools\Csp\PublicMethods,
+		\MvcCore\Ext\Tools\Csp\GroupMethods;
 	
 	/**
 	 * MvcCore Extension - Tool - Content Security Policy - version:
 	 * Comparison by PHP function version_compare();
 	 * @see http://php.net/manual/en/function.version-compare.php
 	 */
-	const VERSION = '5.0.3';
+	const VERSION = '5.0.4';
 
 }
