@@ -50,8 +50,7 @@ trait GroupMethods {
 			->AllowSelf(Csp::FETCH_SCRIPT_SRC)
 			->AllowHosts(Csp::FETCH_IMG_SRC | Csp::FETCH_CONNECT_SRC | Csp::FETCH_SCRIPT_SRC, [
 				'https://www.googletagmanager.com',
-				'https://www.google-analytics.com',
-				'https://ssl.google-analytics.com',
+				'https://*.google-analytics.com',
 				'https://ajax.googleapis.com'
 			])
 			->AllowHosts(Csp::FETCH_IMG_SRC | Csp::FETCH_CONNECT_SRC, [
