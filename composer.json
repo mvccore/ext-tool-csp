@@ -29,7 +29,7 @@
 	"require-dev": {
 		"php": ">=5.4.0",
 		"nette/tester": "<=2.4",
-		"tomflidr/tracy": "<=2.5.13"
+		"tomflidr/tracy": "^2.7.4"
 	},
 	"autoload": {
 		"classmap": ["src/"]
