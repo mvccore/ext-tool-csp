@@ -55,7 +55,7 @@ $csp = Csp::GetInstance()
 		]
 	)
 	->AllowNonce(Csp::FETCH_SCRIPT_SRC)
-	->AllowGoogleMaps();
+	->AllowGoogleMapsJsApi();
 	
 header($csp->GetHeader());
 	
